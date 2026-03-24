@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O2C Graph Intelligence</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- API KEY MODAL -->
+  <div id="api-modal">
+    <div class="modal-box">
+      <h2>O2C <span>Graph</span> Intelligence</h2>
+      <p>Enter your <strong style="color:var(--accent3)">Google Gemini API key</strong> to power the conversational query interface. Your key is stored only in memory.</p>
+      <input type="password" class="modal-input" id="api-key-input" placeholder="AIza..." />
+      <button class="modal-btn" onclick="initSystem()">Launch System →</button>
+      <div class="modal-note">✅ Gemini free tier · 1500 req/day · No credit card needed</div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo"><div class="logo-dot"></div>O2C <span>GRAPH</span> INTELLIGENCE</div>
+    <div class="header-meta">
+      <div class="stat-pill">Nodes: <span class="val" id="stat-nodes">0</span></div>
+      <div class="stat-pill">Edges: <span class="val" id="stat-edges">0</span></div>
+      <div class="stat-pill">Records: <span class="val" id="stat-records">0</span></div>
+      <div class="stat-pill">SAP O2C · Real Dataset</div>
+    </div>
+  </header>
+
+  <div class="main">
+    <!-- GRAPH PANEL -->
+    <div class="graph-panel" id="graph-container">
+      <svg id="graph-svg"></svg>
+      <div class="graph-controls">
+        <button class="ctrl-btn active" id="btn-all"        onclick="filterGraph('all')">⬡ All</button>
+        <button class="ctrl-btn"        id="btn-orders"     onclick="filterGraph('SalesOrder')">⬡ Orders</button>
+        <button class="ctrl-btn"        id="btn-deliveries" onclick="filterGraph('Delivery')">⬡ Deliveries</button>
+        <button class="ctrl-btn"        id="btn-billing"    onclick="filterGraph('BillingDoc')">⬡ Billing</button>
+        <button class="ctrl-btn"        id="btn-journal"    onclick="filterGraph('JournalEntry')">⬡ Journal</button>
+        <button class="ctrl-btn"        id="btn-customers"  onclick="filterGraph('Customer')">⬡ Customers</button>
+        <button class="ctrl-btn"        id="btn-products"   onclick="filterGraph('Product')">⬡ Products</button>
+        <button class="ctrl-btn"        id="btn-payments"   onclick="filterGraph('Payment')">⬡ Payments</button>
+      </div>
+      <div class="legend">
+        <div class="legend-title">Node Types</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--node-order)"></div>Sales Order</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--node-delivery)"></div>Delivery</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--node-billing)"></div>Billing Doc</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--node-journal)"></div>Journal Entry</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--node-customer)"></div>Customer</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--node-product)"></div>Product</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--node-payment)"></div>Payment</div>
+      </div>
+      <div id="tooltip"><div class="tt-title" id="tt-title"></div><div id="tt-body"></div></div>
+    </div>
+
+    <!-- CHAT PANEL -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="chat-header-icon">🧠</div>
+        <div class="chat-header-info">
+          <div class="title">Graph Query Agent</div>
+          <div class="sub">SAP O2C · Real Dataset · 19 tables</div>
+        </div>
+        <div class="status-dot"></div>
+      </div>
+      <div class="messages" id="messages">
+        <div class="msg ai">
+          <div class="msg-label">Graph Agent</div>
+          <div class="msg-bubble">
+            Hello! I'm loaded with the <strong>real SAP O2C dataset</strong>.<br><br>
+            Ask me about sales orders, deliveries, billing documents, journal entries, customers, products, and payments.<br><br>
+            <em style="color:var(--text3);font-size:10px;">Only O2C dataset questions answered.</em>
+          </div>
+        </div>
+      </div>
+      <div class="suggestions" id="suggestions-box">
+        <div class="suggestions-label">Try asking</div>
+        <button class="sugg-btn" onclick="sendSuggestion(this.textContent)">Which products appear in the most billing documents?</button>
+        <button class="sugg-btn" onclick="sendSuggestion(this.textContent)">Find sales orders delivered but not billed</button>
+        <button class="sugg-btn" onclick="sendSuggestion(this.textContent)">Which customers have the highest order value?</button>
+        <button class="sugg-btn" onclick="sendSuggestion(this.textContent)">Show total revenue billed vs paid</button>
+      </div>
+      <div class="chat-input-area">
+        <textarea class="chat-input" id="chat-input" placeholder="Ask about the O2C dataset..." rows="1"
+          onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/queryEngine.js"></script>
+  <script src="js/graph.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
