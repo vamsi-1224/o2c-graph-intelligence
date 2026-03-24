@@ -97,7 +97,7 @@ Example:This system is designed to answer questions related to the provided data
 - OpenRouter (for natural language interpretation)
 
 ---
-
+Note: For security reasons, API keys are not exposed in the public repository. The system includes a local query engine that handles dataset-based queries without relying on external APIs.
 ## Demo
 
 https://o2c-graph-ui.onrender.com
