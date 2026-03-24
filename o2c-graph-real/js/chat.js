@@ -281,9 +281,24 @@ async function callAI(messages, systemPrompt) {
 // Format query result (summary-only, no raw tables)
 // ============================================================
 function formatResult(result) {
-  if (!result) return '';
-  if (result.error) return '⚠️ ' + result.error;
-  return ''; // AI summary only — no raw data shown
+  if (!result) return "No data found.";
+
+  if (Array.isArray(result)) {
+    if (result.length === 0) return "No results found.";
+
+    // Show first few items
+    let preview = result.slice(0, 3).map((r, i) => {
+      return (r.SalesOrder || r.Product || JSON.stringify(r));
+    }).join(", ");
+
+    return "Found " + result.length + " records. Example: " + preview;
+  }
+
+  if (typeof result === "object") {
+    return "Query executed successfully.";
+  }
+
+  return String(result);
 }
 
 // ============================================================
@@ -349,13 +364,7 @@ async function sendMessage() {
     conversationHistory.push({ role: 'user', content: text });
 
     // Step 1: classify query
-    var queryResponse = await callAI(conversationHistory, SYSTEM_PROMPT);
-    var parsed;
-    try {
-      parsed = JSON.parse(queryResponse.replace(/```json|```/g, '').trim());
-    } catch(e) {
-      throw new Error('Could not parse AI response. Please rephrase your question.');
-    }
+    var parsed = QueryEngine.interpretQuery(text);
 
     if (!parsed.query) {
       removeTyping(typingEl);
@@ -366,10 +375,7 @@ async function sendMessage() {
       var queryResult = QueryEngine.execute(parsed.query);
 
       // Step 3: summarise with AI
-      var summary = await callAI([{
-        role: 'user',
-        content: 'User asked: "' + text + '"\nQuery: ' + JSON.stringify(parsed.query) + '\nData: ' + JSON.stringify(queryResult) + '\nSummarise.'
-      }], RESPONSE_PROMPT);
+      var summary = QueryEngine.formatResult(queryResult);
 
       removeTyping(typingEl);
       appendMsg('ai', summary, true);
