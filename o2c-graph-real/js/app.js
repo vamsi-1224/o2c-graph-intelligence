@@ -11,18 +11,18 @@
 // const userKey = localStorage.getItem("apiKey") || prompt("Enter your API key:");
 // localStorage.setItem("apiKey", userKey);
 var AI_PROVIDER = 'openrouter';
-// var AI_KEY      = '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';
+var AI_KEY      = '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';
 // Get key from localStorage or ask user
-var AI_KEY = localStorage.getItem("apiKey");
+// var AI_KEY = localStorage.getItem("apiKey");
 
-if (!AI_KEY) {
-  AI_KEY = prompt("Enter your OpenRouter API key:");
-  if (AI_KEY) {
-    localStorage.setItem("apiKey", AI_KEY);
-  }
-}
+// if (!AI_KEY) {
+//   AI_KEY = prompt("Enter your OpenRouter API key:");
+//   if (AI_KEY) {
+//     localStorage.setItem("apiKey", AI_KEY);
+//   }
+// }
 
-var AI_PROVIDER = 'openrouter';
+// var AI_PROVIDER = 'openrouter';
 
 // OPTION B: OpenRouter (free models available)
 //   Get key at: https://openrouter.ai
