@@ -9,7 +9,7 @@
 //var AI_PROVIDER = 'gemini';
 //var AI_KEY      = 'YOUR_GEMINI_API_KEY_HERE';
 var AI_PROVIDER = 'openrouter';
-var AI_KEY      = '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';
+var AI_KEY      = '';
 
 // OPTION B: OpenRouter (free models available)
 //   Get key at: https://openrouter.ai
